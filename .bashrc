@@ -46,6 +46,7 @@ export PATH="/usr/local/sbin:/usr/local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 export PATH="/usr/local/opt:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
+export PATH="~/bin:$PATH"
 
 # aliases
 alias sb="source ~/.bash_profile"
