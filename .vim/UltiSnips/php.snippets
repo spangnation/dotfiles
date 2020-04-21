@@ -1,0 +1,76 @@
+snippet _c "Constructor"
+private $$1;
+
+public function __construct($$1)
+{
+	$this->$1 = $$1;
+}
+endsnippet
+
+snippet pri "Private function"
+private function ${1}()
+{
+	${2}
+}
+endsnippet
+
+snippet pub "Public function"
+public function ${1}()
+{
+	${2}
+}
+endsnippet
+
+snippet / "comment block"
+/*
+ * ${1}
+ */
+endsnippet
+
+snippet tc "New test comment"
+/** @test */
+endsnippet
+
+snippet tcg "New group test comment"
+/** @group ${1} */
+endsnippet
+
+snippet tm "Create new test method"
+/** @test */
+public function ${1}()
+{
+	${2}
+}
+endsnippet
+
+snippet set "Setup method"
+public function setUp() : void
+{
+	parent::setUp();
+	${1}
+}
+endsnippet
+
+snippet class "Create a new class"
+<?php
+
+namespace ${1};
+
+class `!p snip.rv=snip.basename`
+{
+	${2}
+}
+endsnippet
+
+snippet phpunit "Creates a unit test with PHPUnit's testcase class"
+<?php
+
+namespace Tests\Unit;
+
+use PHPUnit\Framework\TestCase;
+
+class `!p snip.rv=snip.basename` extends TestCase
+{
+	${1}	
+}
+endsnippet 

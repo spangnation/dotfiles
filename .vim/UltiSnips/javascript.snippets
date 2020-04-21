@@ -1,0 +1,33 @@
+global !p
+import sys;
+def current_line():
+	return snip.fn.upper() + " #" + str(snip.p.start)[1:3] + ": "
+endglobal
+
+snippet / "comment"
+/*
+ * ${0}
+ */
+endsnippet
+
+snippet it "it block"
+it("${0}", () => {
+
+});
+endsnippet
+
+snippet desc "describe block"
+describe("${0}", () => {
+	it("", () => {
+		
+	});
+});
+endsnippet
+
+snippet cl "console log"
+console.log(${0});
+endsnippet
+
+snippet cln "console log with file name and line #"
+console.log("`!p snip.rv = current_line()`", ${0});
+endsnippet

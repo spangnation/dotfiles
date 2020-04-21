@@ -1,0 +1,10 @@
+--recurse=yes
+--exclude=.git
+--exclude=node_modules
+--exclude=tests
+--exclude=vendor
+--exclude=resources
+--exclude=public
+
+# PHP
+--regex-php=/^[ \t]*trait[ \t]+([a-z0_9_]+)/\1/t,traits/i
