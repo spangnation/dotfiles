@@ -37,8 +37,6 @@ rake clean && rake make
 cd ~/
 
 # cli tools
-brew install the_silver_searcher
-brew install chrome-cli
-brew install ctags
-brew install composer
-brew install yarn
+brew install the_silver_searcher ctags composer yarn python3 pngquant multimarkdown graphviz
+brew install imagemagick --with-ghostscript
+brew install ffmpeg --with-fdk-aac --with-x265
