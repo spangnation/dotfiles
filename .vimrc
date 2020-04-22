@@ -87,22 +87,20 @@ nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 set complete-=i
 
 " testing
-let g:test#preserve_screen = 0
-let test#strategy = "basic"
+let g:test#preserve_screen = 1
+let test#strategy = "vimterminal"
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
-
 let g:test#javascript#jest#executable = 'yarn test'
-let g:test#python#pytest#executable = 'pytest -s'
 
 " command-t
 if &term =~ "xterm" || &term =~ "screen"
     let g:CommandTCancelMap = ['<ESC>', '<C-c>']
 endif
-let g:CommandTWildIgnore=&wildignore . ",*/node_modules,vendor,build,venv,__pycache__"
+let g:CommandTWildIgnore=&wildignore . ",*/node_modules,vendor,build,venv,__pycache__,coverage,dist,lib"
 let g:CommandTTraverseSCM="pwd:"
 map <leader>f :CommandT<CR>
 
@@ -134,6 +132,17 @@ function! RenameFile()
         redraw!
     endif
 endfunction
+
+function! OpenChangedFiles()
+  only " Close all windows, unless they're modified
+  let status = system('git status -s | grep "^ \?\(M\|A\|UU\)" | sed "s/^.\{3\}//"')
+  let filenames = split(status, "\n")
+  exec "edit " . filenames[0]
+  for filename in filenames[1:]
+    exec "sp " . filename
+  endfor
+endfunction
+command! OpenChangedFiles :call OpenChangedFiles()
 
 " function key maps
 map <leader>n :call RenameFile()<cr>

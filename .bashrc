@@ -3,7 +3,6 @@ set +h
 # expand aliases in non-interactive shells
 shopt -s expand_aliases
 
-
 # prompt
 source ~/bin/git-prompt.bash
 function minutes_since_last_commit {
@@ -41,12 +40,11 @@ export HISTSIZE=100000
 export HISTFILE="$HOME/.history"
 export SAVEHIST=$HISTSIZE
 
-### paths
+### path
 export PATH="/usr/local/sbin:/usr/local/bin:$HOME/bin:$PATH"
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 export PATH="/usr/local/opt:$PATH"
 export PATH="/usr/local/opt/ruby/bin:$PATH"
-export PATH="~/bin:$PATH"
 
 # aliases
 alias sb="source ~/.bash_profile"
@@ -62,6 +60,7 @@ alias ag="ag --path-to-ignore ~/.ignore"
 alias b="./build.sh"
 alias python="python3"
 
+
 # git autocomplete
 # https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
 if [ -f ~/.git-completion.bash ]; then
@@ -72,17 +71,6 @@ fi
 mkcd() {
     mkdir -pv $1
     cd $1
-}
-
-r() {
-   curDir="${PWD##*/}"
-
-   if [ ! -d "build" ]; then
-       echo "build is not a directory"
-       return -1
-   fi
-
-   ./build/$curDir "$@"
 }
 
 # work
