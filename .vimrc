@@ -54,6 +54,8 @@ syntax on
 " 'cindent' is on in C files, etc.
 " also load indent files, to automatically do language-dependent indenting.
 filetype plugin indent on
+autocmd FileType txt setlocal textwidth=78
+autocmd FileType text setlocal textwidth=78
 autocmd Filetype gitcommit setlocal spell textwidth=72
 autocmd FileType python setlocal shiftwidth=2 softtabstop=2 expandtab
 " use emacs-style tab completion when selecting files, etc
@@ -68,48 +70,72 @@ set nofoldenable
 " insert only one space when joining lines that contain sentence-terminating
 " punctuation like `.`.
 set nojoinspaces
-" if a file is changed outside of vim, automatically reload it without asking
+" I think this tells vim to set the context of autocomplete to buffers only. (??)
+set complete-=i
+
+" colors
+"-------------------
 set autoread
 set t_Co=256
 set background=dark
 colorscheme grb256
+
+" key maps
+"-------------------
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-h> <c-w>h
 nnoremap <c-l> <c-w>l
 nnoremap <leader><leader> <c-^>
+" Insert a hash rocket with <c-l>
+imap <c-l> <space>=><space>
 map <Space><Space> :ccl<cr>
 nnoremap <leader>c :!chrome-cli reload<cr>
 nnoremap <leader>cf :let @*=expand("%")<CR>
 nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
-" I think this tells vim to set the context of autocomplete to buffers only. (??)
-set complete-=i
 
 " testing
+"-------------------
 let g:test#preserve_screen = 1
-let test#strategy = "vimterminal"
+let test#strategy = "basic"
 nmap <silent> <leader>t :TestNearest<CR>
 nmap <silent> <leader>a :TestSuite<CR>
 nmap <silent> <leader>T :TestFile<CR>
 nmap <silent> <leader>l :TestLast<CR>
 nmap <silent> <leader>g :TestVisit<CR>
-let g:test#javascript#jest#executable = 'yarn test'
+let g:test#javascript#jest#executable = 'yarn test --noStackTrace'
 
 " command-t
+"-------------------
 if &term =~ "xterm" || &term =~ "screen"
     let g:CommandTCancelMap = ['<ESC>', '<C-c>']
 endif
-let g:CommandTWildIgnore=&wildignore . ",*/node_modules,vendor,build,venv,__pycache__,coverage,dist,lib"
+let g:CommandTWildIgnore=&wildignore . ",*/node_modules,vendor,build,venv,__pycache__,coverage,dist,cypress,img"
 let g:CommandTTraverseSCM="pwd:"
 map <leader>f :CommandT<CR>
 
 " ag
+"-------------------
 if executable('ag')
     set grepprg=ag\ -S\ --nogroup\ --no-color
 endif
 nnoremap  \ :Ag!<SPACE>
 
+" autocmds
+"-------------------
+augroup vimrcEx
+" clear all autocmds in the group
+autocmd!
+" open a file at the last known cursor position (if it exists)
+autocmd BufReadPost *
+    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+    \   exe "normal g'\"" |
+    \ endif
+augroup END
+
+" functions
+"-------------------
 function! s:MkNonExDir(file, buf)
     if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
         let dir=fnamemodify(a:file, ':h')
@@ -132,6 +158,7 @@ function! RenameFile()
         redraw!
     endif
 endfunction
+map <leader>n :call RenameFile()<cr>
 
 function! OpenChangedFiles()
   only " Close all windows, unless they're modified
@@ -142,7 +169,5 @@ function! OpenChangedFiles()
     exec "sp " . filename
   endfor
 endfunction
-command! OpenChangedFiles :call OpenChangedFiles()
 
-" function key maps
-map <leader>n :call RenameFile()<cr>
+command! OpenChangedFiles :call OpenChangedFiles()
