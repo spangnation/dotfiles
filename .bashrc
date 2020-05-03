@@ -1,6 +1,6 @@
 set +h
 
-# expand aliases in non-interactive shells
+# allow for alias calls within vim
 shopt -s expand_aliases
 
 # prompt
@@ -28,7 +28,8 @@ export PATH="/usr/local/opt/ruby/bin:$PATH"
 alias sb="source ~/.bash_profile"
 alias vimrc="vim ~/.vimrc"
 alias bashrc="vim ~/.bashrc"
-alias ls="ls -lG"
+alias ls="ls -A1"
+alias ll="ls -lG"
 alias mkdir="mkdir -pv"
 alias ..="cd .."
 alias ...="cd ../.."
@@ -37,6 +38,7 @@ alias phpunit="./vendor/bin/phpunit"
 alias ag="ag --path-to-ignore ~/.ignore"
 alias b="./build.sh"
 alias python="python3"
+alias notes="vim ~/notes"
 
 
 # git autocomplete
@@ -49,15 +51,6 @@ fi
 mkcd() {
     mkdir -pv $1
     cd $1
-}
-
-notes() {
-    if [ $1 ]
-    then
-        vim ~/notes/$1.txt
-    else
-        vim ~/notes
-    fi
 }
 
 # work

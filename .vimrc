@@ -113,7 +113,7 @@ if &term =~ "xterm" || &term =~ "screen"
 endif
 let g:CommandTWildIgnore=&wildignore . ",*/node_modules,vendor,build,venv,__pycache__,coverage,dist,cypress,img"
 let g:CommandTTraverseSCM="pwd:"
-map <leader>f :CommandT<CR>
+map <leader>f :CommandTFlush<cr>\|:CommandT<CR>
 
 " ag
 "-------------------
