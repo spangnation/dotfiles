@@ -26,8 +26,8 @@ set scrolljump=10
 set lazyredraw
 set cmdheight=1
 set switchbuf=useopen
-" always show tab bar at the top
-set showtabline=2
+" don't show tabline at top of screen
+set showtabline=0
 set winwidth=79
 " set shell vim should use
 set shell=bash
@@ -58,6 +58,7 @@ autocmd FileType txt setlocal textwidth=78
 autocmd FileType text setlocal textwidth=78
 autocmd Filetype gitcommit setlocal spell textwidth=72
 autocmd FileType python setlocal shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType ruby setlocal shiftwidth=2 softtabstop=2 expandtab
 " use emacs-style tab completion when selecting files, etc
 set wildmode=longest,list
 " make tab completion for files/buffers act like bash
@@ -72,13 +73,14 @@ set nofoldenable
 set nojoinspaces
 " I think this tells vim to set the context of autocomplete to buffers only. (??)
 set complete-=i
+set autoread
 
 " colors
 "-------------------
-set autoread
 set t_Co=256
 set background=dark
 colorscheme grb256
+" colorscheme simple-dark
 
 " key maps
 "-------------------
@@ -97,14 +99,24 @@ nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 
 " testing
 "-------------------
-let g:test#preserve_screen = 1
+let g:test#preserve_screen = 0
 let test#strategy = "basic"
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
-let g:test#javascript#jest#executable = 'yarn test --noStackTrace'
+
+function! MapCR()
+  nnoremap <cr> :call RunTest(':TestFile')<cr>
+endfunction
+call MapCR()
+
+let g:test#php#phpunit#executable = "kubectl exec deployment.apps/api -- ./vendor/bin/phpunit"
+let g:test#javascript#jest#executable = ":!kubectl exec deployment.apps/ui -- yarn test --colors"
+
+nnoremap <leader>t :call RunTest(':TestNearest')<cr>
+nnoremap <leader>a :call RunTest(':TestSuite')<CR>
+function! RunTest(cmd)
+    let current_file = expand('%:p')
+    exec ':silent w ' . current_file
+    exec a:cmd
+endfunction
 
 " command-t
 "-------------------
@@ -118,7 +130,7 @@ map <leader>f :CommandTFlush<cr>\|:CommandT<CR>
 " ag
 "-------------------
 if executable('ag')
-    set grepprg=ag\ -S\ --nogroup\ --no-color
+    set grepprg=ag\ -S\ --nogroup\ --no-color\ --path-to-ignore\ ~/.ignore
 endif
 nnoremap  \ :Ag!<SPACE>
 
@@ -132,7 +144,16 @@ autocmd BufReadPost *
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g'\"" |
     \ endif
+
+" Leave the return key alone when in command line windows, since it's used
+" to run commands there.
+autocmd! CmdwinEnter * :unmap <cr>
+autocmd! CmdwinLeave * :call MapCR()
+
+nnoremap K <Nop>
+
 augroup END
+
 
 " functions
 "-------------------

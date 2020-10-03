@@ -1,3 +1,27 @@
+snippet if "if statement"
+if (${0}) {
+
+}
+endsnippet
+
+snippet ifelse "if statement"
+if (${0}) {
+
+} else {
+
+}
+endsnippet
+
+snippet for "foreach"
+foreach (${0}) {
+	
+}
+endsnippet
+
+snippet dd "dd"
+dd(${0});
+endsnippet
+
 snippet _c "Constructor"
 private $$1;
 
@@ -74,3 +98,11 @@ class `!p snip.rv=snip.basename` extends TestCase
 	${1}	
 }
 endsnippet 
+
+snippet n "adds a note comment"
+/*
+ * NOTE (spangler):
+ *
+ * ${0}
+ */
+endsnippet
