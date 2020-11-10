@@ -101,8 +101,20 @@ endsnippet
 
 snippet n "adds a note comment"
 /*
- * NOTE (spangler):
- *
- * ${0}
+ * NOTE (spangler): ${0}
  */
+endsnippet
+
+snippet switch "switch"
+switch (${0}) {
+    case :
+        break;
+    default:
+}
+endsnippet
+
+snippet obj "return object"
+return (object) [
+	${0}
+];
 endsnippet

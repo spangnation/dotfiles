@@ -94,6 +94,7 @@ imap <c-l> <space>=><space>
 map <Space><Space> :ccl<cr>
 nnoremap <leader>c :!chrome-cli reload<cr>
 nnoremap <leader>cf :let @*=expand("%")<CR>
+nnoremap <leader>gb :!git blame %<CR>
 nnoremap <expr> j v:count ? (v:count > 5 ? "m'" . v:count : '') . 'j' : 'gj'
 nnoremap <expr> k v:count ? (v:count > 5 ? "m'" . v:count : '') . 'k' : 'gk'
 
@@ -109,6 +110,9 @@ call MapCR()
 
 let g:test#php#phpunit#executable = "kubectl exec deployment.apps/api -- ./vendor/bin/phpunit"
 let g:test#javascript#jest#executable = ":!kubectl exec deployment.apps/ui -- yarn test --colors"
+let g:test#javascript#cypress#executable = ":!yarn cypress:run --browser chrome --headed"
+let g:test#javascript#jest#file_pattern = "\.test\.js"
+let test#javascript#cypres#file_pattern = "\.spec\.js"
 
 nnoremap <leader>t :call RunTest(':TestNearest')<cr>
 nnoremap <leader>a :call RunTest(':TestSuite')<CR>
